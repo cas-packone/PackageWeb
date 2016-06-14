@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>PackageWeb</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="js/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+    <script src="js/jquery-3.0.0.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>PackageWeb</h1>
+    <h3>package rpm,deb,tar on web page</h3>
+    <div class="panel panel-default">
+
+        <div class="panel-body">
+           <form class="form-horizontal">
+               <div class="form-group">
+                   <label class="col-xs-2 col-md-2 col-sm-2" >源类型（source）</label>
+                   <div class="col-xs-4 col-md-4 col-sm-4">
+                       <select id="source" name="source" class="form-control" style="width:100px">
+                           <option>rpm</option>
+                           <option>deb</option>
+                           <option>tar</option>
+                       </select>
+                   </div>
+                   <label class="col-xs-2 col-md-2 col-sm-2" >目标类型（target）</label>
+                   <div class="col-xs-4 col-md-4 col-sm-4">
+                       <select id="target" name="target" class="form-control" style="width:100px">
+                           <option>deb</option>
+                           <option>rpm</option>
+                           <option>tar</option>
+                       </select>
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-xs-2 col-md-2 col-sm-2" >软件名称（name）</label>
+                   <div class="col-xs-10 col-md-10 col-sm-10">
+                       <input type="text" class="form-control" id="softname" name="softname" style="width:300px" />
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-xs-2 col-md-2 col-sm-2" >软件版本号（version）</label>
+                   <div class="col-xs-4 col-md-4 col-sm-4">
+                       <input type="text" class="form-control" id="version" name="version" style="width:300px" placeholder="default 1.0"/>
+                   </div>
+                   <label class="col-xs-2 col-md-2 col-sm-2" >发行版本号（release）</label>
+                   <div class="col-xs-4 col-md-4 col-sm-4">
+                       <input type="text" class="form-control" id="release" name="release" style="width:300px" placeholder="default 1"/>
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-xs-2 col-md-2 col-sm-2" >安装前执行命令（before-install）</label>
+                   <div class="col-xs-10 col-md-10 col-sm-10">
+                       <textarea class="form-control" rows="5" id="before_install" name="before_install"></textarea>
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-xs-2 col-md-2 col-sm-2" >安装后执行命令（after-install）</label>
+                   <div class="col-xs-10 col-md-10 col-sm-10">
+                       <textarea class="form-control" rows="5" id="after_install" name="after_install"></textarea>
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-xs-2 col-md-2 col-sm-2" >删除前执行命令（before-remove）</label>
+                   <div class="col-xs-10 col-md-10 col-sm-10">
+                       <textarea class="form-control" rows="5" id="before_remove" name="before_remove"></textarea>
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-xs-2 col-md-2 col-sm-2" >删除后执行命令（after-remove）</label>
+                   <div class="col-xs-10 col-md-10 col-sm-10">
+                       <textarea class="form-control" rows="5" id="after_remove" name="after_remove"></textarea>
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-xs-2 col-md-2 col-sm-2" >更新前执行命令（before-upgrade）</label>
+                   <div class="col-xs-10 col-md-10 col-sm-10">
+                       <textarea class="form-control" rows="5" id="before_upgrade" name="before_upgrade"></textarea>
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-xs-2 col-md-2 col-sm-2" >更新后执行命令（after-upgrade）</label>
+                   <div class="col-xs-10 col-md-10 col-sm-10">
+                       <textarea class="form-control" rows="5" id="after_upgrade" name="after_upgrade"></textarea>
+                   </div>
+               </div>
+               <div class="form-group">
+                   <div class="col-xs-offset-2 col-xs-10">
+                       <button type="submit" class="btn btn-success" style="text-align: right">提交（submit）</button>
+                   </div>
+               </div>
+           </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
