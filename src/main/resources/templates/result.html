@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>PackageWeb</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="js/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+    <script src="js/jquery-3.0.0.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>PackageWeb</h1>
+    <h3>package rpm,deb,tar on web page</h3>
+    <div class="panel panel-default">
+        <div class="panel-body">
+
+            <h3>File Download</h3>
+            <p th:text="${result}" />
+            <ul>
+                <li th:each="item : ${file}" >
+                    <a href="#" th:href="'download/'+${item}+'/'" th:text="${item}">Item description here...</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -13,23 +13,11 @@
     <div class="panel panel-default">
 
         <div class="panel-body">
-           <form class="form-horizontal">
+           <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/upload">
                <div class="form-group">
-                   <label class="col-xs-2 col-md-2 col-sm-2" >源类型（source）</label>
-                   <div class="col-xs-4 col-md-4 col-sm-4">
-                       <select id="source" name="source" class="form-control" style="width:100px">
-                           <option>tar</option>
-                           <option>rpm</option>
-                           <option>deb</option>
-                       </select>
-                   </div>
-                   <label class="col-xs-2 col-md-2 col-sm-2" >目标类型（target）</label>
-                   <div class="col-xs-4 col-md-4 col-sm-4">
-                       <select id="target" name="target" class="form-control" style="width:100px">
-                           <option>rpm</option>
-                           <option>deb</option>
-                           <option>tar</option>
-                       </select>
+                   <label class="col-xs-2 col-md-2 col-sm-2" >源码包（file）</label>
+                   <div class="col-xs-10 col-md-10 col-sm-10">
+                       <input id="fileupload" type="file" name="file" />
                    </div>
                </div>
                <div class="form-group">
@@ -84,12 +72,7 @@
                        <textarea class="form-control" rows="5" id="after_upgrade" name="after_upgrade"></textarea>
                    </div>
                </div>
-               <div class="form-group">
-                   <label class="col-xs-2 col-md-2 col-sm-2" >源码包（file）</label>
-                   <div class="col-xs-10 col-md-10 col-sm-10">
-                       <input id="fileupload" type="file" name="file" />
-                   </div>
-               </div>
+
                <div class="form-group">
                    <div class="col-xs-offset-2 col-xs-10">
                        <button type="submit" class="btn btn-success" style="text-align: right">提交（submit）</button>
