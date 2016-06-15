@@ -20,7 +20,30 @@
                <div class="form-group">
                    <label class="col-xs-2 col-md-2 col-sm-2" >源码包（file）</label>
                    <div class="col-xs-10 col-md-10 col-sm-10">
-                       <input id="fileupload" type="file" name="file" />
+                       <input id="file" type="file" name="file" />
+                   </div>
+               </div>
+               <div class="form-group">
+                   <label class="col-xs-2 col-md-2 col-sm-2" >目标类型（target type）</label>
+                   <div class="col-xs-10 col-md-10 col-sm-10">
+                       <div class="checkbox">
+                           <label>
+                               <input type="checkbox" id="target" name="target" value="rpm" checked="checked"/>
+                               rpm
+                           </label>
+                       </div>
+                       <div class="checkbox">
+                           <label>
+                               <input type="checkbox" id="target" name="target" value="deb" checked="checked"/>
+                               deb
+                           </label>
+                       </div>
+                       <div class="checkbox">
+                           <label>
+                               <input type="checkbox" id="target" name="target" value="tar" checked="checked"/>
+                               tar
+                           </label>
+                       </div>
                    </div>
                </div>
                <div class="form-group">

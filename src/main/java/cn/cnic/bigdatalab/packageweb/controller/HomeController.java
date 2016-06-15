@@ -61,6 +61,7 @@ import javax.websocket.server.PathParam;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -78,7 +79,7 @@ public class HomeController {
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     String upload(
             @RequestParam(defaultValue = "tar") String source,
-            @RequestParam(defaultValue = "rpm") String target,
+            @RequestParam(defaultValue = "") String target,
             @RequestParam(defaultValue = "") String softname,
             @RequestParam(defaultValue = "1.0") String version,
             @RequestParam(defaultValue = "1") String release,
@@ -99,6 +100,10 @@ public class HomeController {
         }
         if(StringUtils.isBlank(softname)){
             redirectAttributes.addFlashAttribute("message", "name is null");
+            return "redirect:/";
+        }
+        if(StringUtils.isBlank(target)){
+            redirectAttributes.addFlashAttribute("message", "target type is null");
             return "redirect:/";
         }
 
@@ -135,40 +140,62 @@ public class HomeController {
             redirectAttributes.addFlashAttribute("message", "Not Support file type");
             return "redirect:/";
         }
-        List<String> targetArrays = new ArrayList<>();
-        targetArrays.add("rpm");
-        targetArrays.add("deb");
-        targetArrays.add("tar");
+        //gen shell
+        if(StringUtils.isNotBlank(before_install)){
+            genShell("before_install.sh",before_install,path);
+        }
+        if(StringUtils.isNotBlank(after_install)){
+            genShell("after_install.sh",after_install,path);
+        }
+        if(StringUtils.isNotBlank(before_remove)){
+            genShell("before_remove.sh",before_remove,path);
+        }
+        if(StringUtils.isNotBlank(after_remove)){
+            genShell("after_remove.sh",after_remove,path);
+        }
+        if(StringUtils.isNotBlank(before_upgrade)){
+            genShell("before_upgrade.sh",before_upgrade,path);
+        }
+        if(StringUtils.isNotBlank(after_upgrade)){
+            genShell("after_upgrade.sh",after_upgrade,path);
+        }
+
+        List<String> targetArrays = Arrays.asList(target.split(","));
 
         for (String targetTemp: targetArrays
              ) {
-            StringBuffer command = new StringBuffer();
-            command.append("fpm ");
-            command.append(" -s " + source);
-            command.append(" -t " + targetTemp);
-            command.append(" -n " + softname);
-            command.append(" -v " + version);
-            command.append(" --iteration " + release);
-            command.append(" -p " + targetPath);
-            command.append(" " + path + "/" + file.getOriginalFilename());
+            StringBuffer cmd = new StringBuffer();
+            cmd.append("fpm ");
+            cmd.append(" -s " + source);
+            cmd.append(" -t " + targetTemp);
+            cmd.append(" -n " + softname);
+            cmd.append(" -v " + version);
+            cmd.append(" --iteration " + release);
+            cmd.append(" -p " + targetPath);
 
-            StringBuffer output = new StringBuffer();
-            Process p;
-            try {
-                p = Runtime.getRuntime().exec(command.toString());
-                p.waitFor();
-                BufferedReader reader =
-                        new BufferedReader(new InputStreamReader(p.getInputStream()));
 
-                String line = "";
-
-                while ((line = reader.readLine())!= null) {
-                    output.append(line + "\n");
-                }
-                logger.info("command info :{}",output.toString());
-            } catch (Exception e) {
-                e.printStackTrace();
+            if(StringUtils.isNotBlank(before_install)){
+                cmd.append(String.format(" --before-install %s/before_install.sh",path));
             }
+            if(StringUtils.isNotBlank(after_install)){
+                cmd.append(String.format(" --after-install %s/after_install.sh",path));
+            }
+            if(StringUtils.isNotBlank(before_remove)){
+                cmd.append(String.format(" --before-remove %s/before_remove.sh",path));
+            }
+            if(StringUtils.isNotBlank(after_remove)){
+                cmd.append(String.format(" --after-remove %s/after_remove.sh",path));
+            }
+            if(StringUtils.isNotBlank(before_upgrade)){
+                cmd.append(String.format(" --before-upgrade %s/before_upgrade.sh",path));
+            }
+            if(StringUtils.isNotBlank(after_upgrade)){
+                cmd.append(String.format(" --after-upgrade %s/after_upgrade.sh",path));
+            }
+
+            cmd.append(" " + path + "/" + file.getOriginalFilename());
+
+            command(cmd.toString());
         }
 
 
@@ -207,5 +234,38 @@ public class HomeController {
         }
         in.close();
         out.close();
+    }
+
+    private void genShell(String fileName,String content,String path)  {
+        try {
+            BufferedOutputStream stream = new BufferedOutputStream(
+                    new FileOutputStream(new File(path +"/" + fileName)));
+            FileCopyUtils.copy(content.getBytes(), stream);
+            stream.close();
+
+            command(String.format("chmod 755 %s/%s",path,fileName));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void command(String cmd){
+        StringBuffer output = new StringBuffer();
+        Process p;
+        try {
+            p = Runtime.getRuntime().exec(cmd);
+            p.waitFor();
+            BufferedReader reader =
+                    new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+            String line = "";
+
+            while ((line = reader.readLine())!= null) {
+                output.append(line + "\n");
+            }
+            logger.info("command info :{}",output.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
