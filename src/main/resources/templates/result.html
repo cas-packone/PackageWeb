@@ -14,7 +14,6 @@
         <div class="panel-body">
 
             <h3>File Download</h3>
-            <p th:text="${result}" />
             <ul>
                 <li th:each="item : ${file}" >
                     <a href="#" th:href="'download/'+${item}+'/'" th:text="${item}">Item description here...</a>

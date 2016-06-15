@@ -1,7 +1,7 @@
 /**
  * Project Name:packageweb
  * File Name:HomeController
- * Package Name:com.github.bigdatalab.packageweb.controller
+ * Package Name:cn.cnic.bigdatalab.packageweb.controller
  * Author : moonx
  * Date:2016/6/14
  * Copyright (c) 2016,  All Rights Reserved.
@@ -79,7 +79,7 @@ public class HomeController {
     String upload(
             @RequestParam(defaultValue = "tar") String source,
             @RequestParam(defaultValue = "rpm") String target,
-            @RequestParam(defaultValue = "") String name,
+            @RequestParam(defaultValue = "") String softname,
             @RequestParam(defaultValue = "1.0") String version,
             @RequestParam(defaultValue = "1") String release,
             @RequestParam(defaultValue = "") String before_install,
@@ -93,12 +93,21 @@ public class HomeController {
                   HttpServletRequest request,
             HttpSession session,
             Model model) {
-        //long time = System.currentTimeMillis();
-        long time = 1465955810301L;
+        if (file.isEmpty()){
+            redirectAttributes.addFlashAttribute("message", "No File Upload");
+            return "redirect:/";
+        }
+        if(StringUtils.isBlank(softname)){
+            redirectAttributes.addFlashAttribute("message", "name is null");
+            return "redirect:/";
+        }
+
+        long time = System.currentTimeMillis();
+        //long time = 1465955810301L;
         String path = Application.ROOT + "/" + time ;
         String targetPath = path + "/target";
-        //new File(path).mkdir();
-        //new File(resultPath).mkdir();
+        new File(path).mkdir();
+        new File(targetPath).mkdir();
         if (!file.isEmpty()) {
             try {
                 BufferedOutputStream stream = new BufferedOutputStream(
@@ -110,16 +119,58 @@ public class HomeController {
                 e.printStackTrace();
             }
         }
-        StringBuffer command = new StringBuffer();
-        command.append("fpm ");
-        command.append(" -s " + source);
-        command.append(" -t " + target);
-        command.append(" -n " + name);
-        command.append(" -v " + version);
-        command.append(" --iteration " + release);
-        command.append(" " + file.getOriginalFilename());
+        String fileName = file.getOriginalFilename();
+        String ext = fileName.substring(fileName.indexOf(".") + 1, fileName.length());
+        if(ext.equalsIgnoreCase("rpm")){
+            source = "rpm";
+        }else if(ext.equalsIgnoreCase("tar")){
+            source = "tar";
+        }else if(ext.equalsIgnoreCase("gz")){
+            source = "tar";
+        }else if(ext.equalsIgnoreCase("deb")){
+            source = "deb";
+        }else if(ext.equalsIgnoreCase("zip")){
+            source = "zip";
+        }else{
+            redirectAttributes.addFlashAttribute("message", "Not Support file type");
+            return "redirect:/";
+        }
+        List<String> targetArrays = new ArrayList<>();
+        targetArrays.add("rpm");
+        targetArrays.add("deb");
+        targetArrays.add("tar");
 
-        model.addAttribute("result",command.toString());
+        for (String targetTemp: targetArrays
+             ) {
+            StringBuffer command = new StringBuffer();
+            command.append("fpm ");
+            command.append(" -s " + source);
+            command.append(" -t " + targetTemp);
+            command.append(" -n " + softname);
+            command.append(" -v " + version);
+            command.append(" --iteration " + release);
+            command.append(" -p " + targetPath);
+            command.append(" " + path + "/" + file.getOriginalFilename());
+
+            StringBuffer output = new StringBuffer();
+            Process p;
+            try {
+                p = Runtime.getRuntime().exec(command.toString());
+                p.waitFor();
+                BufferedReader reader =
+                        new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+                String line = "";
+
+                while ((line = reader.readLine())!= null) {
+                    output.append(line + "\n");
+                }
+                logger.info("command info :{}",output.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
 
         File targetDir = new File(targetPath);
         File[] files = targetDir.listFiles();

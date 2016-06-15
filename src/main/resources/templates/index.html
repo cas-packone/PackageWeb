@@ -10,8 +10,11 @@
 <div class="container">
     <h1>PackageWeb</h1>
     <h3>package rpm,deb,tar on web page</h3>
+    <h3>support upload file type tar,tar.gz,zip</h3>
     <div class="panel panel-default">
-
+        <div th:if="${message}">
+            <h5 th:text="${message}" style="color:red"/>
+        </div>
         <div class="panel-body">
            <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/upload">
                <div class="form-group">
