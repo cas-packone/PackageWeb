@@ -6,6 +6,9 @@ package rpm,deb,tar on web page
 - not focus on Linux versions
 - convenience through web
 
+###Assumptions
+- must install fpm before run. Reference: https://github.com/jordansissel/fpm
+
 ###How to run
 mvn spring-boot:run
 
@@ -19,7 +22,6 @@ mvn spring-boot:run
 - thymeleaf
 - fpm
 
-###Reference
-- https://github.com/jordansissel/fpm
+
 
 
