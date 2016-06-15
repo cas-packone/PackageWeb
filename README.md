@@ -15,11 +15,11 @@ mvn spring-boot:run
 ![Image](../master/screenshots/filedownload.png?raw=true)
 
 ###Stack
--Spring boot
--thymeleaf
--fpm
+- Spring boot
+- thymeleaf
+- fpm
 
 ###Reference
-https://github.com/jordansissel/fpm
+- https://github.com/jordansissel/fpm
 
 
