@@ -3,3 +3,4 @@ target/*
 .git/*
 .idea/*
 *.iml
+.upload/
