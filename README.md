@@ -2,8 +2,9 @@
 package rpm,deb,tar on web page
 
 ###Feature
--support upload file type tar,tar.gz,zip
--not focus on Linux versions
+- support upload file type tar,tar.gz,zip
+- not focus on Linux versions
+- convenience through web
 
 ###How to run
 mvn spring-boot:run
