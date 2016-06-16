@@ -11,6 +11,8 @@ package rpm,deb,tar on web page
 
 ###How to run
 mvn spring-boot:run
+or
+java -jar ***.jar
 
 ###Web Page
 ![Image](../master/screenshots/packageweb1.png?raw=true)
