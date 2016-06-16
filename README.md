@@ -10,9 +10,9 @@ package rpm,deb,tar on web page
 - must install fpm before run. Reference: https://github.com/jordansissel/fpm
 
 ###How to run
-mvn spring-boot:run
-or
-java -jar ***.jar
+mvn spring-boot:run  <br>
+or  <br>
+java -jar ***.jar <br>
 
 ###Web Page
 ![Image](../master/screenshots/packageweb1.png?raw=true)
