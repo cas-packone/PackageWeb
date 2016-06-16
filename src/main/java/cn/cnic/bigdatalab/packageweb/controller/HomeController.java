@@ -130,7 +130,7 @@ public class HomeController {
             source = "rpm";
         }else if(ext.equalsIgnoreCase("tar")){
             source = "tar";
-        }else if(ext.equalsIgnoreCase("gz")){
+        }else if(ext.equalsIgnoreCase("tar.gz")){
             source = "tar";
         }else if(ext.equalsIgnoreCase("deb")){
             source = "deb";
