@@ -125,12 +125,12 @@ public class HomeController {
             }
         }
         String fileName = file.getOriginalFilename();
-        String ext = fileName.substring(fileName.indexOf(".") + 1, fileName.length());
+        String ext = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
         if(ext.equalsIgnoreCase("rpm")){
             source = "rpm";
         }else if(ext.equalsIgnoreCase("tar")){
             source = "tar";
-        }else if(ext.equalsIgnoreCase("tar.gz")){
+        }else if(ext.equalsIgnoreCase("gz")){
             source = "tar";
         }else if(ext.equalsIgnoreCase("deb")){
             source = "deb";
