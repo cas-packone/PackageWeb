@@ -89,6 +89,7 @@ public class HomeController {
             @RequestParam(defaultValue = "") String after_remove,
             @RequestParam(defaultValue = "") String before_upgrade,
             @RequestParam(defaultValue = "") String after_upgrade,
+            @RequestParam(defaultValue = "") String dependency,
             @RequestParam("file") MultipartFile file,
                   RedirectAttributes redirectAttributes,
                   HttpServletRequest request,
@@ -171,7 +172,15 @@ public class HomeController {
             cmd.append(" -n " + softname);
             cmd.append(" -v " + version);
             cmd.append(" --iteration " + release);
+            if(StringUtils.isNotBlank(dependency)){
+                String[] deps = dependency.split(";");
+                for (String dep:deps
+                        ) {
+                    cmd.append(" -d " + dep);
+                }
+            }
             cmd.append(" -p " + targetPath);
+
 
 
             if(StringUtils.isNotBlank(before_install)){
@@ -253,6 +262,7 @@ public class HomeController {
         StringBuffer output = new StringBuffer();
         Process p;
         try {
+            logger.info("excute cmd :{}" + cmd);
             p = Runtime.getRuntime().exec(cmd);
             p.waitFor();
             BufferedReader reader =
