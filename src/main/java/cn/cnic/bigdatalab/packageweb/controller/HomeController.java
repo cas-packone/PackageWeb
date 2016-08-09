@@ -167,20 +167,21 @@ public class HomeController {
              ) {
             StringBuffer cmd = new StringBuffer();
             cmd.append("fpm ");
+            if(StringUtils.isNotBlank(dependency)){
+                //logger.info(dependency);
+                String[] deps = dependency.split("\r\n");
+                for (String dep:deps
+                        ) {
+                    cmd.append(" --depends \'" + dep.trim() + "\'");
+                }
+            }
             cmd.append(" -s " + source);
             cmd.append(" -t " + targetTemp);
             cmd.append(" -n " + softname);
             cmd.append(" -v " + version);
             cmd.append(" --iteration " + release);
-            if(StringUtils.isNotBlank(dependency)){
-                String[] deps = dependency.split(";");
-                for (String dep:deps
-                        ) {
-                    cmd.append(" -d " + dep);
-                }
-            }
-            cmd.append(" -p " + targetPath);
 
+            cmd.append(" -p " + targetPath);
 
 
             if(StringUtils.isNotBlank(before_install)){
@@ -262,7 +263,7 @@ public class HomeController {
         StringBuffer output = new StringBuffer();
         Process p;
         try {
-            logger.info("excute cmd :{}" + cmd);
+            logger.info("excute cmd :{}", cmd);
             p = Runtime.getRuntime().exec(cmd);
             p.waitFor();
             BufferedReader reader =
