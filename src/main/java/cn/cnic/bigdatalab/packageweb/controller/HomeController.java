@@ -172,7 +172,7 @@ public class HomeController {
                 String[] deps = dependency.split("\r\n");
                 for (String dep:deps
                         ) {
-                    cmd.append(" --depends \'" + dep.trim() + "\'");
+                    cmd.append(" --depends '" + dep.trim() + "'");
                 }
             }
             cmd.append(" -s " + source);
@@ -182,7 +182,7 @@ public class HomeController {
             cmd.append(" --iteration " + release);
 
             cmd.append(" -p " + targetPath);
-
+            //cmd.append(" -p ./ ");
 
             if(StringUtils.isNotBlank(before_install)){
                 cmd.append(String.format(" --before-install %s/before_install.sh",path));
@@ -204,7 +204,11 @@ public class HomeController {
             }
 
             cmd.append(" " + path + "/" + file.getOriginalFilename());
+            //cmd.append(" ./target/" + file.getOriginalFilename());
 
+            //genShell("generate.sh",cmd.toString(),path);
+            //String cmd_file = path + "/generate.sh" ;
+            //command(cmd_file);
             command(cmd.toString());
         }
 
